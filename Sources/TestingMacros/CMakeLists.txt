@@ -59,6 +59,11 @@ if(SwiftTesting_BuildMacrosAsExecutables)
 else()
   add_library(TestingMacros SHARED)
 
+  target_link_options(TestingMacros PRIVATE "-no-toolchain-stdlib-rpath")
+  # Not setting RPATH requires all the dependencies are already loaded in the
+  # process, because 'plugin' directory wouldn't contain any dependencies.
+  set_property(TARGET TestingMacros PROPERTY INSTALL_RPATH)
+
   # Install the macro plugin to the default location.
   #
   # This is not the plugin's actual, final install location -- it's only

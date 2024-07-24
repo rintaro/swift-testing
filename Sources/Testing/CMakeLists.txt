@@ -112,8 +112,9 @@ else()
     "SHELL:$<$<COMPILE_LANGUAGE:Swift>:-plugin-path ${BINARY_DIR}>")
 endif()
 
-# TODO: @rpath-relative install name
-# This may or may not involve the `-(no-)toolchain-stdlib-rpath` Swift flag.
+target_compile_options(Testing PRIVATE "-no-toolchain-stdlib-rpath")
+# TODO: Finalize
+set_property(TARGET Testing PROPERTY INSTALL_RPATH "$ORIGIN")
 
 include(SwiftModuleInstallation)
 # TODO: Finalize the install path
