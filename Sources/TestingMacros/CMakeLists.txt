@@ -60,16 +60,17 @@ else()
   add_library(TestingMacros SHARED)
 
   target_link_options(TestingMacros PRIVATE "-no-toolchain-stdlib-rpath")
-  # Not setting RPATH requires all the dependencies are already loaded in the
-  # process, because 'plugin' directory wouldn't contain any dependencies.
+  # Not setting RPATH means it requires all the dependencies are already loaded
+  # in the process, because 'plugin' directory wouldn't contain any dependencies.
   set_property(TARGET TestingMacros PROPERTY INSTALL_RPATH)
 
-  # Install the macro plugin to the default location.
-  #
-  # This is not the plugin's actual, final install location -- it's only
-  # relative to this external project's install dir. The final location is
-  # determined by the "outer" project.
-  install(TARGETS TestingMacros)
+  if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    install(TARGETS TestingMacros
+      RUNTIME DESTINATION bin)
+  else()
+    # Other platforms, TestingMacros is installed by the parent project.
+    install(TARGETS TestingMacros)
+  endif()
 endif()
 
 target_sources(TestingMacros PRIVATE
