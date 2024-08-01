@@ -100,18 +100,6 @@ target_compile_options(Testing PRIVATE
   -enable-library-evolution
   -emit-module-interface -emit-module-interface-path $<TARGET_PROPERTY:Testing,Swift_MODULE_DIRECTORY>/Testing.swiftinterface)
 
-if(SwiftTesting_BuildMacrosAsExecutables)
-  if(CMAKE_HOST_WIN32)
-    set(_TestingMacros_ExecutableSuffix ".exe")
-  endif()
-
-  target_compile_options(Testing PUBLIC
-    "SHELL:$<$<COMPILE_LANGUAGE:Swift>:-load-plugin-executable ${BINARY_DIR}/TestingMacros${_TestingMacros_ExecutableSuffix}#TestingMacros>")
-else()
-  target_compile_options(Testing PUBLIC
-    "SHELL:$<$<COMPILE_LANGUAGE:Swift>:-plugin-path ${BINARY_DIR}>")
-endif()
-
 target_compile_options(Testing PRIVATE "-no-toolchain-stdlib-rpath")
 # TODO: Finalize
 set_property(TARGET Testing PROPERTY INSTALL_RPATH "$ORIGIN")
